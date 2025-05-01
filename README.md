@@ -25,7 +25,7 @@ An interactive, beginner-friendly visualization to understand the intuition behi
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/interactive-logistic-regression-demo.git
+git clone https://github.com/venugopal-adep/logistic-regression-demo-app.git
 ```
 
 2. Navigate to the project directory:
@@ -40,7 +40,7 @@ npm install
 
 #### Option 2: Download as ZIP
 
-1. Visit the GitHub repository at `https://github.com/your-username/interactive-logistic-regression-demo`
+1. Visit the GitHub repository at `https://github.com/venugopal-adep/logistic-regression-demo-app.git`
 2. Click the "Code" button and select "Download ZIP"
 3. Extract the ZIP file to your preferred location
 4. Navigate to the extracted directory in your terminal/command prompt
