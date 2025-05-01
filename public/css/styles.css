@@ -1,0 +1,560 @@
+/* Global styles */
+:root {
+    --primary-color: #4285f4;
+    --secondary-color: #34a853;
+    --accent-color: #ea4335;
+    --light-bg: #f8f9fa;
+    --dark-bg: #202124;
+    --text-color: #202124;
+    --light-text: #f8f9fa;
+    --border-color: #dadce0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: #666;
+}
+
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* New Grid Layout for Interactive Section */
+.main-interactive-section {
+    margin-bottom: 40px;
+}
+
+.interactive-grid {
+    display: grid;
+    grid-template-columns: 250px 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+    grid-template-areas:
+        "controls main-viz main-viz"
+        "controls sigmoid sigmoid"
+        "controls confusion cost";
+    min-height: 800px;
+}
+
+/* Controls Panel */
+.controls-panel {
+    grid-area: controls;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.control-group {
+    margin-bottom: 15px;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.learning-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.learning-controls button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Add styles for metrics display in controls panel */
+.metrics-display {
+    background-color: var(--light-bg);
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: auto;
+}
+
+.metrics-display h3 {
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+/* Main Visualization */
+.main-visualization {
+    grid-area: main-viz;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-visualization #decision-boundary-plot {
+    flex: 1;
+    width: 100%;
+    min-height: 350px;
+}
+
+/* Sigmoid Visualization */
+.sigmoid-visualization {
+    grid-area: sigmoid;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sigmoid-visualization #sigmoid-plot {
+    flex: 1;
+    width: 100%;
+    min-height: 220px;
+}
+
+/* Confusion Matrix Visualization */
+.confusion-visualization {
+    grid-area: confusion;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.confusion-visualization #confusion-matrix {
+    flex: 1;
+    width: 100%;
+    min-height: 200px;
+}
+
+/* Cost Visualization */
+.cost-visualization {
+    grid-area: cost;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cost-visualization #gradient-descent-visual {
+    flex: 1;
+    width: 100%;
+    min-height: 200px;
+}
+
+.visualization-caption {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: bold;
+    color: var(--dark-bg);
+}
+
+/* Explanatory Content - Below the fold */
+.explanatory-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.explanatory-content h2 {
+    color: var(--primary-color);
+    margin: 25px 0 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.explanatory-content h2:first-child {
+    margin-top: 0;
+}
+
+.explanatory-content p {
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.formula {
+    background-color: var(--light-bg);
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+ul, ol {
+    margin-left: 25px;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+.step-by-step {
+    background-color: var(--light-bg);
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+/* Real World Examples */
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.example {
+    background-color: var(--light-bg);
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.example h3 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 1100px) {
+    .interactive-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, auto);
+        grid-template-areas:
+            "controls"
+            "main-viz"
+            "sigmoid"
+            "confusion"
+            "cost";
+    }
+}
+
+/* Other existing styles... */
+/* Guided Tour Styles */
+.tour-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    pointer-events: none;
+    /* Removing the blur filter that was causing visibility issues */
+    backdrop-filter: none;
+}
+
+.tour-tooltip {
+    position: fixed;
+    max-width: 350px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 101;
+    transition: all 0.3s ease;
+}
+
+.tour-tooltip h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.tour-tooltip p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.tour-progress {
+    font-size: 0.8em;
+    color: #666;
+    text-align: right;
+}
+
+.tour-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 102;
+    display: flex;
+    gap: 10px;
+}
+
+.tour-prev-btn,
+.tour-next-btn,
+.tour-close-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tour-prev-btn {
+    background-color: #ddd;
+    color: #333;
+}
+
+.tour-prev-btn:hover {
+    background-color: #ccc;
+}
+
+.tour-next-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tour-next-btn:hover {
+    background-color: #3367d6;
+}
+
+.tour-close-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.tour-close-btn:hover {
+    background-color: #d33426;
+}
+
+.tour-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tour-button:hover {
+    background-color: #2d9247;
+}
+
+/* Animation effects for learning visualization */
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.learning-point {
+    animation: pulse 0.8s infinite;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fade-in 0.5s forwards;
+}
+
+/* Tooltip styles for explanations */
+.tooltip-trigger {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    border-bottom: 1px dotted #666;
+}
+
+.tooltip-content {
+    visibility: hidden;
+    position: absolute;
+    width: 250px;
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip-trigger:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Arrow for tooltip */
+.tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--dark-bg) transparent transparent transparent;
+}
+
+/* Formula Container Styles */
+.formula-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.formula {
+    flex: 1;
+    min-width: 300px;
+    background-color: var(--light-bg);
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.sigmoid-formula {
+    border-left: 4px solid var(--primary-color);
+}
+
+.loss-formula {
+    border-left: 4px solid var(--accent-color);
+}
+
+/* Learning Parameters Table */
+.learning-params-section {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.learning-params-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#learning-params-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+#learning-params-table th,
+#learning-params-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+#learning-params-table th {
+    background-color: var(--light-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#learning-params-table tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+#learning-params-table tr:hover {
+    background-color: #e8f0fe;
+}
+
+/* Formula containers */
+.formula-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.formula {
+    background-color: #f5f9ff;
+    border-left: 5px solid #4a90e2;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 300px;
+    margin-bottom: 15px;
+}
+
+.formula h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+}
+
+.formula p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.formula strong {
+    color: #2980b9;
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Logistic Regression Demo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="/node_modules/d3/dist/d3.min.js"></script>
+    <script src="/node_modules/mathjs/lib/browser/math.js"></script>
+    <script src="/node_modules/plotly.js-dist/plotly.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Understanding Logistic Regression Intuitively</h1>
+        <p class="subtitle">An interactive visualization to understand how logistic regression works</p>
+        <!-- Tour button will be added by JavaScript -->
+    </header>
+
+    <main>
+        <!-- Main interactive section - visible in a single screen -->
+        <div class="main-interactive-section">
+            <div class="interactive-grid">
+                <!-- Interactive controls panel -->
+                <div class="controls-panel">
+                    <h2>Interactive Controls</h2>
+                    
+                    <div class="control-group">
+                        <label for="weight0">Bias (w<sub>0</sub>): <span id="weight0-value">0</span></label>
+                        <input type="range" id="weight0" min="-5" max="5" step="0.1" value="0">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="weight1">Weight 1 (w<sub>1</sub>): <span id="weight1-value">1</span></label>
+                        <input type="range" id="weight1" min="-5" max="5" step="0.1" value="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="weight2">Weight 2 (w<sub>2</sub>): <span id="weight2-value">1</span></label>
+                        <input type="range" id="weight2" min="-5" max="5" step="0.1" value="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="data-points">Data points: <span id="data-points-value">100</span></label>
+                        <input type="range" id="data-points" min="50" max="500" step="10" value="100">
+                        <button id="regenerate-data">Regenerate Data</button>
+                    </div>
+
+                    <div class="learning-controls">
+                        <button id="start-learning">Start Automatic Learning</button>
+                        <button id="stop-learning" disabled>Stop Learning</button>
+                    </div>
+                    
+                    <div class="metrics-display">
+                        <h3>Performance Metrics</h3>
+                        <p><span class="tooltip-trigger">Accuracy<span class="tooltip-content">(True Positives + True Negatives) / Total Predictions</span></span>: <span id="accuracy">0.0</span></p>
+                        <p><span class="tooltip-trigger">Precision<span class="tooltip-content">True Positives / (True Positives + False Positives)</span></span>: <span id="precision">0.0</span></p>
+                        <p><span class="tooltip-trigger">Recall<span class="tooltip-content">True Positives / (True Positives + False Negatives)</span></span>: <span id="recall">0.0</span></p>
+                    </div>
+                </div>
+
+                <!-- Main visualization area -->
+                <div class="main-visualization">
+                    <div id="decision-boundary-plot"></div>
+                    <p class="visualization-caption">Logistic Regression Decision Boundary</p>
+                </div>
+
+                <!-- Sigmoid function visualization -->
+                <div class="sigmoid-visualization">
+                    <div id="sigmoid-plot"></div>
+                    <p class="visualization-caption">Sigmoid Function</p>
+                </div>
+
+                <!-- Confusion Matrix visualization -->
+                <div class="confusion-visualization">
+                    <div id="confusion-matrix"></div>
+                    <p class="visualization-caption">Confusion Matrix</p>
+                </div>
+
+                <!-- Cost visualization -->
+                <div class="cost-visualization">
+                    <div id="gradient-descent-visual"></div>
+                    <p class="visualization-caption">Cost vs. Iteration</p>
+                </div>
+            </div>
+            
+            <!-- Learning Parameters Table -->
+            <div class="learning-params-section">
+                <h3>Learning Process Parameters</h3>
+                <div class="table-container">
+                    <table id="learning-params-table">
+                        <thead>
+                            <tr>
+                                <th>Iteration</th>
+                                <th>w₁</th>
+                                <th>w₂</th>
+                                <th>b</th>
+                                <th>z</th>
+                                <th>ŷ</th>
+                                <th>Loss</th>
+                                <th>∇w₁</th>
+                                <th>∇w₂</th>
+                                <th>∇b</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explanatory content - scrollable below the main interactive section -->
+        <div class="explanatory-content">
+            <h2>What is Logistic Regression?</h2>
+            <p>
+                Logistic regression is a statistical model used for <span class="tooltip-trigger">binary classification<span class="tooltip-content">A type of classification where the outcome can only be one of two classes (e.g., yes/no, 0/1)</span></span> problems. 
+                Unlike linear regression that outputs continuous values, logistic regression uses a 
+                <span class="tooltip-trigger">sigmoid function<span class="tooltip-content">An S-shaped function that maps any real-valued number to a value between 0 and 1</span></span> 
+                to transform its output to a probability between 0 and 1.
+            </p>
+            
+            <h2>Key Formulas in Logistic Regression</h2>
+            
+            <div class="formula-container">
+                <div class="formula sigmoid-formula">
+                    <h3>The Sigmoid Function</h3>
+                    <p><strong>σ(z) = 1 / (1 + e<sup>-z</sup>)</strong></p>
+                    <p>Where <strong>z</strong> is the linear predictor: <strong>z = w<sub>0</sub> + w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + ...</strong></p>
+                    <p>The sigmoid function maps any real value to a probability between 0 and 1.</p>
+                </div>
+                
+                <div class="formula loss-formula">
+                    <h3>Log Loss (Binary Cross-Entropy)</h3>
+                    <p><strong>L(ŷ, y) = -(y·log(ŷ) + (1-y)·log(1-ŷ))</strong></p>
+                    <p>Where <strong>ŷ</strong> is predicted probability and <strong>y</strong> is actual class (0 or 1)</p>
+                    <p>For a dataset of n examples: <strong>J(w) = -1/n · Σ<sub>i=1</sub><sup>n</sup> [y<sub>i</sub>·log(ŷ<sub>i</sub>) + (1-y<sub>i</sub>)·log(1-ŷ<sub>i</sub>)]</strong></p>
+                </div>
+            </div>
+            
+            <div class="formula-container">
+                <div class="formula">
+                    <h3>Gradient of the Loss Function</h3>
+                    <p>For a single training example:</p>
+                    <p><strong>∂L/∂w<sub>j</sub> = (ŷ - y) · x<sub>j</sub></strong></p>
+                    <p>For the bias term w<sub>0</sub>, x<sub>0</sub> = 1, so: <strong>∂L/∂w<sub>0</sub> = (ŷ - y)</strong></p>
+                    <p>For all examples, average the gradients: <strong>∇J(w) = 1/n · Σ<sub>i=1</sub><sup>n</sup> (ŷ<sub>i</sub> - y<sub>i</sub>) · x<sub>i</sub></strong></p>
+                </div>
+                
+                <div class="formula">
+                    <h3>Gradient Descent Update Rule</h3>
+                    <p>For each weight w<sub>j</sub>:</p>
+                    <p><strong>w<sub>j</sub> := w<sub>j</sub> - α · ∂L/∂w<sub>j</sub></strong></p>
+                    <p>Expanded form: <strong>w<sub>j</sub> := w<sub>j</sub> - α · (ŷ - y) · x<sub>j</sub></strong></p>
+                    <p>Where <strong>α</strong> is the learning rate that controls the step size</p>
+                </div>
+            </div>
+
+            <div class="formula-container">
+                <div class="formula">
+                    <h3>Decision Boundary Equation</h3>
+                    <p>The decision boundary is where <strong>P(y=1|x) = 0.5</strong></p>
+                    <p>At P(y=1|x) = 0.5, z = 0, so the boundary is where:</p>
+                    <p><strong>w<sub>0</sub> + w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + ... = 0</strong></p>
+                    <p>For a 2D case, this gives us the line: <strong>x<sub>2</sub> = (-w<sub>0</sub> - w<sub>1</sub>x<sub>1</sub>) / w<sub>2</sub></strong></p>
+                </div>
+                
+                <div class="formula">
+                    <h3>Performance Metrics</h3>
+                    <p><strong>Accuracy = (TP + TN) / (TP + TN + FP + FN)</strong></p>
+                    <p><strong>Precision = TP / (TP + FP)</strong></p>
+                    <p><strong>Recall = TP / (TP + FN)</strong></p>
+                    <p>Where TP = True Positives, TN = True Negatives, FP = False Positives, FN = False Negatives</p>
+                </div>
+            </div>
+            
+            <h2>Key Concepts</h2>
+            <ul>
+                <li><strong><span class="tooltip-trigger">Decision Boundary<span class="tooltip-content">The line or curve that separates different classes in the feature space</span></span>:</strong> The line (or curve) that separates the two classes</li>
+                <li><strong><span class="tooltip-trigger">Probability<span class="tooltip-content">In logistic regression, the probability represents the likelihood that an observation belongs to the positive class</span></span>:</strong> Output of the sigmoid function (0 to 1)</li>
+                <li><strong><span class="tooltip-trigger">Classification<span class="tooltip-content">The process of assigning a class label based on the predicted probability</span></span>:</strong> If probability ≥ 0.5, predict class 1; otherwise, predict class 0</li>
+            </ul>
+
+            <h2>How Logistic Regression Learns</h2>
+            <p>
+                Logistic regression learns by adjusting the weights (w₀, w₁, w₂, etc.) to minimize the
+                <span class="tooltip-trigger">binary cross-entropy loss<span class="tooltip-content">A loss function that measures how well the predicted probabilities match the actual class labels</span></span>.
+                In this visualization, you can manually adjust these weights to see how they affect the decision boundary.
+            </p>
+            <div class="step-by-step">
+                <h3>Step-by-Step Learning Process:</h3>
+                <ol>
+                    <li>Start with initial weights (often random or all zeros)</li>
+                    <li>For each training example or batch:
+                        <ul>
+                            <li>Calculate z = w₀ + w₁x₁ + w₂x₂ + ...</li>
+                            <li>Apply sigmoid function: ŷ = 1/(1+e⁻ᶻ)</li>
+                            <li>Compute error: ŷ - y</li>
+                            <li>Calculate gradients: ∂L/∂wⱼ = (ŷ - y)·xⱼ</li>
+                            <li>Update weights: wⱼ := wⱼ - α·∂L/∂wⱼ</li>
+                        </ul>
+                    </li>
+                    <li>Repeat until convergence or for a fixed number of iterations</li>
+                </ol>
+            </div>
+
+            <h2>Real-World Applications</h2>
+            <div class="examples-grid">
+                <div class="example">
+                    <h3>Spam Detection</h3>
+                    <p>Classifying emails as spam or not-spam based on features like keywords, sender, and email structure.</p>
+                </div>
+                <div class="example">
+                    <h3>Medical Diagnosis</h3>
+                    <p>Predicting whether a patient has a disease based on symptoms, test results, and demographic information.</p>
+                </div>
+                <div class="example">
+                    <h3>Credit Scoring</h3>
+                    <p>Determining whether a loan applicant is likely to default based on financial history and demographics.</p>
+                </div>
+                <div class="example">
+                    <h3>Marketing Analysis</h3>
+                    <p>Predicting whether a customer will make a purchase based on browsing behavior and previous interactions.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Interactive Logistic Regression Demo - Created for educational purposes</p>
+    </footer>
+
+    <script src="js/logistic-regression.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/guided-tour.js"></script>
+</body>
+</html>
